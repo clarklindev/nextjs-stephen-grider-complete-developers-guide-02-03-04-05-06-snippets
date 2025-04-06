@@ -92,3 +92,26 @@ src='exercise_files/21-creating-records.png'
 alt='21-creating-records.png'
 width=600
 />
+
+20. create page
+- src/app/snippets/new/page.tsx
+
+21. creating a prisma client within nextjs
+
+```ts
+//src/db/index.ts
+
+import {PrismaClient} from '@prisma/client';
+
+export const db = new PrismaClient();
+
+//create a snippet
+db.snippet.create({
+    data: {
+        title: "title",
+        code :"const abc = ()=>{}"
+    }
+})
+
+
+```
