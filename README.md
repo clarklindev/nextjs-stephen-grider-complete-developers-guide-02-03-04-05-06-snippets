@@ -158,3 +158,55 @@ export default function SnippetCreatePage() {
 }
 
 ```
+
+---
+
+### Section 03 - streaming content with react server components
+- Define a server action 
+- this is a function that will be called when the form is submitted
+- way to change data in next app
+- close integration with HTML forms
+- server actions are function that will be called with the values a user entered into a form
+
+## server action
+
+### create server action
+- TODO: create server action to change some code in app.
+- define `use server` at top of function
+- the server action function receives a formData prop of type FormData
+- get data off form, eg. `title` is of type `FormDataEntryValue` which is type for what typescript assumes can be a file or string
+- we can use `redirect('/')` from 'next/navigation';
+
+```ts
+import { db } from "@/db";
+import {redirect} from 'next/navigation';
+
+async function createSnippet(formData:FormData){
+  //this needs to be a server action!
+  'use server';
+
+  //check the users inputs and make sure they're valid
+  const title = formData.get('title') as string;
+  const code = formData.get('code') as string;
+
+  //check a new record in the database
+  const snippet = await db.snippet.create({
+    data:{
+      title,
+      code
+    }
+  });
+
+  //redirect user back to the root route
+  redirect('/');
+}
+
+export default function SnippetCreatePage() {
+    return (
+      <form action={createSnippet}>
+      //...
+      </form>
+    )
+}
+```
+
