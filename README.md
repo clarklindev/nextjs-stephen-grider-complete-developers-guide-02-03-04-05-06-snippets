@@ -1,8 +1,8 @@
 # Section 2 - Changing Data with Mutations
 
 ## test urls:
-[create snippet](http://localhost:3000/snippets/new)
-[view snippets](http://localhost:3000)
+[create snippet](http://localhost:3000/snippets/new)  
+[view snippets](http://localhost:3000)  
 
 ---
 
@@ -267,5 +267,22 @@ export default async function Home() {
   )
 }
 
-
 ```
+
+## 27. adding dynamic paths
+- ability to view a snippet
+
+<img
+src='exercise_files/27-adding-dynamic-paths.png'
+alt='27-adding-dynamic-paths.png'
+width=600
+/>
+
+- use id from url to show dynamic content
+- http://localhost:3000/snippets/1
+
+<img
+src='exercise_files/27-dynamic-pages.png'
+alt='27-dynamic-pages.png'
+width=600
+/>
