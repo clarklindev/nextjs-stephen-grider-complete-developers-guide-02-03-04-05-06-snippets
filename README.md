@@ -286,3 +286,54 @@ src='exercise_files/27-dynamic-pages.png'
 alt='27-dynamic-pages.png'
 width=600
 />
+
+## 28. async dynamic params in nextjs 15
+- in nextjs 15 - we must await params or searchParams before accessing
+```ts
+  const { id } = await props.params;
+ 
+  const snippet = await db.snippet.findFirst({
+    where: { id: parseInt(id) },
+  });
+```
+
+- update the Interface and wrap the params in a Promise:
+```ts
+interface SnippetShowPageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+```
+
+## 29. fetching particular records
+- to pull a particular record from database, use `db.snippet.findFirst()`
+- if data doesnt exist use `import {notFound} from 'next/navigation';`
+  - this redirects to not found page
+
+```tsx
+//app/snippets/[id].tsx
+import {db} from '@/db';
+import {notFound} from 'next/navigation';
+
+interface SnippetShowPageProps{
+    params: Promise<{
+        id:string
+    }>
+}
+
+export default async function SnippetShowPage(props:SnippetShowPageProps){
+    const {id} = await props.params;
+    const snippet = await db.snippet.findFirst({
+        where: {
+            id: parseInt(id)
+        }
+    })
+
+    if(!snippet){
+        return notFound();
+    }
+
+    return <div>{snippet.title}</div>
+}
+```
