@@ -2,6 +2,7 @@
 
 ## test urls:
 [create snippet](http://localhost:3000/snippets/new)
+[view snippets](http://localhost:3000)
 
 ---
 
@@ -233,3 +234,38 @@ export default function SnippetCreatePage() {
   - by default everything is server components
   - can use async await syntax directly in body of component
 
+## 26. fetching data with server components
+
+- fetching data 
+
+<img
+src='exercise_files/25-fetching-data.png'
+alt='25-fetching-data.png'
+width=600
+/>
+
+- from server component, have direct access to db (unless using 3rd party api)
+  - just import prisma client to access db
+
+```tsx
+//app/page.tsx
+
+import { db } from "@/db";
+
+export default async function Home() {
+  const snippets = await db.snippet.findMany();
+  const renderedSnippets = snippets.map((snippet)=>{
+    return (
+      <div key={snippet.id}>
+        {snippet.title}
+      </div>
+    )
+  });
+
+  return (
+    <div>{renderedSnippets}</div>
+  )
+}
+
+
+```
