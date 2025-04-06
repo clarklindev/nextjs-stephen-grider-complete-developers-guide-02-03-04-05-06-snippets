@@ -5,7 +5,7 @@
 
 ---
 
-18. App overview
+## 18. App overview
 
 <img
 src='exercise_files/18-changing-data-with-mutations.png'
@@ -31,7 +31,7 @@ npx create-next-app@latest
 √ Would you like to customize the import alias (`@/*` by default)? ... No
 ```
 
-19. Project setup
+## 19. Project setup
 
 - using sqlite Database
 
@@ -93,10 +93,10 @@ alt='21-creating-records.png'
 width=600
 />
 
-20. create page
+## 20. create page
 - src/app/snippets/new/page.tsx
 
-21. creating a prisma client within nextjs
+## 21. creating a prisma client within nextjs
 
 ```ts
 //src/db/index.ts
@@ -116,7 +116,7 @@ db.snippet.create({
 
 ```
 
-22. adding a creation form
+## 22. adding a creation form
 - the default behavior of a form is to send this to the url with names of form as keys
 
 ```tsx
@@ -162,6 +162,8 @@ export default function SnippetCreatePage() {
 ---
 
 ### Section 03 - streaming content with react server components
+
+## 23. intrducing server actions in nextjs
 - Define a server action 
 - this is a function that will be called when the form is submitted
 - way to change data in next app
@@ -209,4 +211,25 @@ export default function SnippetCreatePage() {
     )
 }
 ```
+## 25. server components vs client components
+
+## server vs client component
+
+### client component
+- client component -> can use hooks
+- to define a client component
+- cannot import server components directly
+- use when you need to use hooks
+- use when you need to use event handlers
+```jsx
+'use client'
+```
+
+### server component
+- server component -> cant use hooks 
+- server component -> cant assign event handlers (eg. no onClick)
+
+  - use as much as possible 
+  - by default everything is server components
+  - can use async await syntax directly in body of component
 
