@@ -1,8 +1,9 @@
 # Section 2 - Changing Data with Mutations
 
 ## test urls:
+
 [create snippet](http://localhost:3000/snippets/new)  
-[view snippets](http://localhost:3000)  
+[view snippets](http://localhost:3000)
 
 ---
 
@@ -14,8 +15,8 @@ alt='18-changing-data-with-mutations.png'
 width=600
 />
 
--   Goal - list, create, view, delete snippets
--   note: app router is newer (nextjs13) than pages router
+- Goal - list, create, view, delete snippets
+- note: app router is newer (nextjs13) than pages router
 
 ```sh
 npx create-next-app@latest
@@ -43,13 +44,17 @@ width=600
 />
 
 ### install prisma
+
 - using prisma to access database
+
 ```sh
 npm install prisma
 ```
 
 ### setup prisma
+
 - setup prisma to use sqlite
+
 ```sh
 npx prisma init --datasource-provider sqlite
 ```
@@ -76,6 +81,7 @@ model Snippet {
   code String
 }
 ```
+
 ### tell db to use model
 
 ```sh
@@ -95,6 +101,7 @@ width=600
 />
 
 ## 20. create page
+
 - src/app/snippets/new/page.tsx
 
 ## 21. creating a prisma client within nextjs
@@ -102,22 +109,21 @@ width=600
 ```ts
 //src/db/index.ts
 
-import {PrismaClient} from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 export const db = new PrismaClient();
 
 //create a snippet
 db.snippet.create({
-    data: {
-        title: "title",
-        code :"const abc = ()=>{}"
-    }
-})
-
-
+  data: {
+    title: "title",
+    code: "const abc = ()=>{}",
+  },
+});
 ```
 
 ## 22. adding a creation form
+
 - the default behavior of a form is to send this to the url with names of form as keys
 
 ```tsx
@@ -157,7 +163,6 @@ export default function SnippetCreatePage() {
     </form>
   );
 }
-
 ```
 
 ---
@@ -165,7 +170,8 @@ export default function SnippetCreatePage() {
 ### Section 03 - streaming content with react server components
 
 ## 23. intrducing server actions in nextjs
-- Define a server action 
+
+- Define a server action
 - this is a function that will be called when the form is submitted
 - way to change data in next app
 - close integration with HTML forms
@@ -174,6 +180,7 @@ export default function SnippetCreatePage() {
 ## server action
 
 ### create server action
+
 - TODO: create server action to change some code in app.
 - define `use server` at top of function
 - the server action function receives a formData prop of type FormData
@@ -182,61 +189,61 @@ export default function SnippetCreatePage() {
 
 ```ts
 import { db } from "@/db";
-import {redirect} from 'next/navigation';
+import { redirect } from "next/navigation";
 
-async function createSnippet(formData:FormData){
+async function createSnippet(formData: FormData) {
   //this needs to be a server action!
-  'use server';
+  "use server";
 
   //check the users inputs and make sure they're valid
-  const title = formData.get('title') as string;
-  const code = formData.get('code') as string;
+  const title = formData.get("title") as string;
+  const code = formData.get("code") as string;
 
   //check a new record in the database
   const snippet = await db.snippet.create({
-    data:{
+    data: {
       title,
-      code
-    }
+      code,
+    },
   });
 
   //redirect user back to the root route
-  redirect('/');
+  redirect("/");
 }
 
 export default function SnippetCreatePage() {
-    return (
-      <form action={createSnippet}>
-      //...
-      </form>
-    )
+  return <form action={createSnippet}>//...</form>;
 }
 ```
+
 ## 25. server components vs client components
 
 ## server vs client component
 
 ### client component
+
 - client component -> can use hooks
 - to define a client component
 - cannot import server components directly
 - use when you need to use hooks
 - use when you need to use event handlers
+
 ```jsx
-'use client'
+"use client";
 ```
 
 ### server component
-- server component -> cant use hooks 
+
+- server component -> cant use hooks
 - server component -> cant assign event handlers (eg. no onClick)
 
-  - use as much as possible 
+  - use as much as possible
   - by default everything is server components
   - can use async await syntax directly in body of component
 
 ## 26. fetching data with server components
 
-- fetching data 
+- fetching data
 
 <img
 src='exercise_files/25-fetching-data.png'
@@ -254,22 +261,16 @@ import { db } from "@/db";
 
 export default async function Home() {
   const snippets = await db.snippet.findMany();
-  const renderedSnippets = snippets.map((snippet)=>{
-    return (
-      <div key={snippet.id}>
-        {snippet.title}
-      </div>
-    )
+  const renderedSnippets = snippets.map((snippet) => {
+    return <div key={snippet.id}>{snippet.title}</div>;
   });
 
-  return (
-    <div>{renderedSnippets}</div>
-  )
+  return <div>{renderedSnippets}</div>;
 }
-
 ```
 
 ## 27. adding dynamic paths
+
 - ability to view a snippet
 
 <img
@@ -288,16 +289,19 @@ width=600
 />
 
 ## 28. async dynamic params in nextjs 15
+
 - in nextjs 15 - we must await params or searchParams before accessing
+
 ```ts
-  const { id } = await props.params;
- 
-  const snippet = await db.snippet.findFirst({
-    where: { id: parseInt(id) },
-  });
+const { id } = await props.params;
+
+const snippet = await db.snippet.findFirst({
+  where: { id: parseInt(id) },
+});
 ```
 
 - update the Interface and wrap the params in a Promise:
+
 ```ts
 interface SnippetShowPageProps {
   params: Promise<{
@@ -307,21 +311,61 @@ interface SnippetShowPageProps {
 ```
 
 ## 29. fetching particular records
+
 - to pull a particular record from database, use `db.snippet.findFirst()`
 - if data doesnt exist use `import {notFound} from 'next/navigation';`
   - this redirects to not found page
 
 ```tsx
 //app/snippets/[id].tsx
-import {db} from '@/db';
-import {notFound} from 'next/navigation';
+import { db } from "@/db";
+import { notFound } from "next/navigation";
 
-interface SnippetShowPageProps{
-    params: Promise<{
-        id:string
-    }>
+interface SnippetShowPageProps {
+  params: Promise<{
+    id: string;
+  }>;
 }
 
+export default async function SnippetShowPage(props: SnippetShowPageProps) {
+  const { id } = await props.params;
+  const snippet = await db.snippet.findFirst({
+    where: {
+      id: parseInt(id),
+    },
+  });
+
+  if (!snippet) {
+    return notFound();
+  }
+
+  return <div>{snippet.title}</div>;
+}
+```
+
+## 30. custom not found page
+
+### special app/ folder files
+
+- page.tsx
+- layout.tsx
+- not-found.tsx
+- loading.tsx
+- error.tsx
+- route.tsx
+
+<img
+src='exercise_files/30-app-folder-special-file-names.png'
+alt='30-app-folder-special-file-names.png'
+width=600
+/>
+
+### notfound
+- call `notFound()`
+- tries to find closest `/not-found.tsx` or in the closest parent
+ 
+```tsx
+//app/snippets/[id]/page.tsx
 export default async function SnippetShowPage(props:SnippetShowPageProps){
     const {id} = await props.params;
     const snippet = await db.snippet.findFirst({
@@ -335,5 +379,18 @@ export default async function SnippetShowPage(props:SnippetShowPageProps){
     }
 
     return <div>{snippet.title}</div>
+}
+```
+
+```tsx
+//app/snippets/[id]/not-found.tsx
+export default function SnippetNotFound() {
+  return (
+    <div>
+		<h1 className="text-xl bold">
+			Sorry, but we couldnt find that particular snippet
+		</h1>
+    </div>
+  );
 }
 ```

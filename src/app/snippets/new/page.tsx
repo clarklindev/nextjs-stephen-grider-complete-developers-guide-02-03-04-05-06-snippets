@@ -17,8 +17,6 @@ async function createSnippet(formData:FormData){
     }
   });
 
-  console.log(snippet);
-
   //redirect user back to the root route
   redirect('/');
 }
