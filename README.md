@@ -882,3 +882,42 @@ to this:
 ```tsx
   const [formState, action] = useActionState(actions.createSnippet, {
 ```
+
+## 47. useFormState (next15 useActionState)
+- `app/snippets/new/page.tsx`
+- cut createSnippet from client component (app/snippets/new/page.tsx) and put in `src/actions/index.ts`
+- the validation message will only show to user after they submit the first time (after server action executes)
+
+```ts
+//src/actions/index.ts
+export async function createSnippet(formState:{message:string}, formData:FormData){
+	//...
+	return {
+        message: 'Title must be longer'
+    }
+}
+```
+
+- NOTE: useActionState() the first prop is the server action to call, second is the initial state
+- returns array [formState, action] second element in array is updated server action with additional functionality
+- this second array element (action) is what gets passed to form action
+- make use of formState eg. log formState.message
+- NOTE: need to mark client component with 'use client';
+
+```tsx
+//app/snippets/new/page.tsx
+'use client';
+
+const [formState, action] = useActionState(actions.createSnippet, {message:''});
+
+    return (
+      <form action={action}>
+
+		//...
+		<div>
+			{formState.message}
+		</div>
+	  </form>
+//...
+
+```
