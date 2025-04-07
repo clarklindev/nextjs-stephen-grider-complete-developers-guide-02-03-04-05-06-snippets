@@ -700,3 +700,44 @@ export async function editSnippet(){
 import { editSnippet } from '@/actions';
 
 ```
+## 42. Options for Calling Server Actions from Client Components
+- have a button that calls server action
+
+### option 1 - (chosen method) use bind to bind import 
+- bind data from state (instead of from form)
+
+```tsx
+import * as actions from 'actions';
+const [code, setCode] = useState(''); 
+const editSnippetAction = actions.editSnippet.bind(null, code)
+```
+
+<img
+src='exercise_files/42-calling-server-action-from-client-component-option1.png'
+alt='42-calling-server-action-from-client-component-option1.png'
+width=600
+/>
+
+### option2 using startTransition()
+
+<img
+src='exercise_files/42-calling-server-action-from-client-component-option2.png'
+alt='42-calling-server-action-from-client-component-option2.png'
+width=600
+/>
+
+- startTransition() ensures our data has been updated before we navigate
+
+```tsx
+import * as actions from 'actions';
+
+const handleClick = ()=>{
+	startTransition(async()=>{
+		await actions.editSnippet(code);
+	});
+}
+
+//...
+return <button onClick={handleClick}>
+
+```
