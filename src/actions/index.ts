@@ -28,31 +28,41 @@ export async function createSnippet(formState:{message:string}, formData:FormDat
     const title = formData.get('title');
     const code = formData.get('code');
 
-    //validation
-    if(typeof title !=='string' || title.length < 3)
-    {
-        return {
-            message: 'Title must be longer'
+    try{
+        //validation
+        if(typeof title !=='string' || title.length < 3)
+        {
+            return {
+                message: 'Title must be longer'
+            }
+        }
+        if(typeof code !=='string' || code.length < 10)
+        {
+            return {
+                message: 'Code must be longer'
+            }
+        }
+
+        //check a new record in the database
+        const snippet = await db.snippet.create({
+            data:{
+                title,
+                code
+            }
+        });
+       
+    }catch(err:unknown){
+        if (err instanceof Error) {
+            return {
+                message: err.message,
+            };
+        } else {
+            return {
+                message: 'Something went wrong...',
+            };
         }
     }
-    if(typeof code !=='string' || code.length < 10)
-    {
-        return {
-            message: 'Code must be longer'
-        }
-    }
-   
-        
-
-
-    //check a new record in the database
-    const snippet = await db.snippet.create({
-      data:{
-        title,
-        code
-      }
-    });
-  
+    
     //redirect user back to the root route
     redirect('/');
 

@@ -993,3 +993,31 @@ export async function createSnippet(formState:{message:string}, formData:FormDat
 
 {formState.message ? <div className="my-2 p-2 bg-red-200 border rounded border-red-400">{formState.message}</div> : null}
 ```
+
+## 50. error handling in nextjs
+
+### option 1
+- using error.tsx
+- must be client component
+- throw an error with message `throw new Error('Oops')`
+- CONS -> cant retry or resubmit
+
+```tsx
+//app/snippets/new/error.tsx
+'use client';
+
+interface ErrorPageProps{
+    error:Error,
+    reset:()=> void;
+}
+
+export default function ErrorPage({error}:ErrorPageProps){
+    return <div>
+        {error.message}
+    </div>
+};
+```
+
+### option 2
+- communicating errors can also use teh FormState hook
+- use try catch block and do test on error type
