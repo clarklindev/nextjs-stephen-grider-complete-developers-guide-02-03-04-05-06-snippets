@@ -637,3 +637,66 @@ export default function SnippetEditForm({snippet}:SnippetEditFormProps){
 }
 
 ```
+
+---
+# Section 04 - Server actions in great detail
+
+## 40. Server Actions in Nextjs Client Components
+- reminder - to define a server action, at top of `async` function use `use server`
+- NOTE: you cant `DEFINE` server functions in client components
+
+```tsx
+// ERROR -> example defining server function inside client component
+async function editSnippet(){
+	'use server';
+}
+```
+
+<img
+src='exercise_files/40-error-defining-server-component-inside-client-component.png'
+alt='40-error-defining-server-component-inside-client-component.png'
+width=600
+/>
+
+- FIX: 
+
+### OPTION 1 - define server action in parent component and pass as prop
+- NOTE: server component cant pass down event handlers to client components (so this option is not good)
+- pass them down through props from a server component 
+
+<img
+src='exercise_files/40-pass-down-as-prop-from-server-component.png'
+alt='40-pass-down-as-prop-from-server-component.png'
+width=600
+/>
+
+
+## 41. server actions in a separate file
+
+### OPTION 2 - export them from a separate file with 'use server' at the top
+- define a separate file and define server action (or multiple) and export it
+
+<img
+src='exercise_files/40-option2-define-server-action-in-separate-file.png'
+alt='40-option2-define-server-action-in-separate-file.png'
+width=600
+/>
+
+- create our server action in external file `src/actions/index.ts`
+
+```tsx
+//src/actions/index.ts
+'use server'
+
+import { db } from "@/db";
+
+export async function editSnippet(){
+    console.log('edit snippet called')
+}
+```
+
+```tsx
+//src/componets/snippet-edit-form.tsx
+import { editSnippet } from '@/actions';
+
+```
