@@ -527,3 +527,67 @@ interface SnippetEditPageProps {
   }>;
 }
 ```
+
+## 36. Showing a Client Component in a Server Component 
+
+<img
+src='exercise_files/36-edit-snippet-page.png'
+alt='36-edit-snippet-page.png'
+width=600
+/>
+
+- TODO: fetch data
+- TODO: update data
+- TODO: show code editor
+
+### react editor
+- React Monaco editor
+
+<img
+src='exercise_files/36-react-monaco-editor.png'
+alt='36-react-monaco-editor.png'
+width=600
+/>
+
+- the idea is we still have a server component
+- server component (SnippetEditPage) passes down the code snippet into a client component (SnippetEditForm)
+
+<img
+src='exercise_files/36-SnippetEditForm-client-component.png'
+alt='36-SnippetEditForm-client-component.png'
+width=600
+/>
+
+- src/components/snippet-edit-form.tsx
+- the type for our SnippetEditFormProps we get from prisma library. 
+- Prisma defines interfaces of records in db
+
+```tsx
+"use client";
+
+import type {Snippet} from '@prisma/client';
+
+interface SnippetEditFormProps{
+    snippet:Snippet
+}
+
+export default function SnippetEditForm({snippet}:SnippetEditFormProps){
+	return (
+		<div>
+			Client component has snippet with title {snippet.title}
+		</div>
+	)
+}
+```
+
+```tsx
+//app/snippets/[id]/edit/page.tsx
+
+import SnippetEditForm from "@/components/snippet-edit-form";
+
+//...
+return (
+	<SnippetEditForm snippet={snippet}/>
+)
+
+```
