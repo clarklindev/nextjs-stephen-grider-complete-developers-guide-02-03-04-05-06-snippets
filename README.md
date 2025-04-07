@@ -394,3 +394,58 @@ export default function SnippetNotFound() {
   );
 }
 ```
+
+## 31. Automatic Loading Spinnners
+- app/loading.tsx
+- displayed whenever server component is fetching some data
+- test by making sure an item exists in db (or create one http://localhost:3000/snippets/create) 
+- then visit http://localhost:3000/snippets/1
+
+```tsx
+//app/snippets/[id]/loading.tsx
+export default function SnippetLoadingPage(){
+    return <div>loading...</div>
+}
+```
+
+## 32. view snippets list
+- add links to go to view snippet page
+- add links to go to create snippet page
+
+<img
+src='exercise_files/32-list-snippet.png'
+alt='32-list-snippet.png'
+width=600
+/>
+
+- import Link `import Link from "next/link";`
+
+```tsx
+//app/page.tsx
+import Link from "next/link";
+import { db } from "@/db";
+
+export default async function Home() {
+  const snippets = await db.snippet.findMany();
+  const renderedSnippets = snippets.map((snippet)=>{
+    return (
+      <Link href={`/snippets/${snippet.id}`} key={snippet.id} className="flex justify-between items-center p-2 border rounded">
+        <div>{snippet.title}</div>
+        <div>view</div>
+      </Link>
+    )
+  });
+
+  return (
+    <div>
+      <div className="flex m-2 justify-between items-center">
+        <h1 className="text-xl font-bold">Snippets</h1>
+        <Link href="/snippets/new" className="border p-2 rounded">new</Link>
+      </div>
+      <div className="flex flex-col gap-2">
+      {renderedSnippets}  
+      </div>
+    </div>
+  )
+}
+```
