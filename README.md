@@ -1021,3 +1021,27 @@ export default function ErrorPage({error}:ErrorPageProps){
 ### option 2
 - communicating errors can also use teh FormState hook
 - use try catch block and do test on error type
+
+---
+# Section 6 - understanding nextjs caching
+
+## 51. unexpected behavior
+- `npm run build`
+- `npm run start` (production mode)
+- if you deploy to production and add/remove something the behavior is unexpected in that if you add sommething then refresh the page the item dissapears
+- its got to do with nextjs caching
+
+## 52. the full route cache system
+
+<img
+src='exercise_files/52-caching-the-full-route-cache-system.png'
+alt='52-caching-the-full-route-cache-system.png'
+width=600
+/>
+
+### the full route cache
+- 1. next finds all the different routes in your app
+- 2. determines if its static or dynamic
+- 3. homepage -> next determines its static -> at build time it renders the homepage (snapshot of when project was built)
+- 4. when someone visits homepage, the exact page is served 
+- TAKEAWAY -> when page is determined to be static, probably have to deal with caching mechanism (to deal with caching in production)
