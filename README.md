@@ -503,3 +503,27 @@ import Link from 'next/link';
 
 <Link href={`/snippets/${snippet.id}/edit`} className="p-2 border rounded">Edit</Link>
 ```
+
+## 35. More Async Dynamic Params In Next.js 15
+- [docs](https://nextjs.org/docs/messages/sync-dynamic-apis)
+- we must await params or searchParams before accessing
+- corrected code
+
+```jsx
+  const { id } = await props.params;
+ 
+  const snippetId = parseInt(id);
+  const snippet = await db.snippet.findFirst({
+    where: { id: snippetId },
+  });
+
+```
+- we need to update the Interface and wrap the params in a Promise
+
+```jsx
+interface SnippetEditPageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+```
