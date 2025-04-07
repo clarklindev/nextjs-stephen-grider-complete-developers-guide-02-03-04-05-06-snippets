@@ -849,3 +849,36 @@ import * as actions from '@/actions';
 		</div>
     );	
 ```
+---
+# Section 05 - Server Forms with UseFormState Hook
+- problem -> empty snippet
+- TODO: add validation
+
+## 45. understanding the UseFormState hook
+- server forms
+- we are trying to run a server action then communicate from server action back to a page
+- React-dom (NOT react) contains a hook called 'useFormState' specifically for this
+- NOTE: client component renders first on server
+- NOTE: if we use the hook the page component must be a client component
+- a form State object is now sent with the FormData, and if there are errors on server, the FormState gets updated with an error message and just needs to return FormState.
+- the page component will re-render and will have access to the formState message
+
+## 46. useActionState in Next v15
+### next15 -> Change the import from this:
+```tsx
+import { useFormState } from 'react-dom';
+```
+to this:
+```tsx
+import { useActionState } from "react";
+```
+
+### next15 -> Change the hook name from this:
+```tsx
+const [formState, action] = useFormState(actions.createSnippet, {;
+```
+
+to this:
+```tsx
+  const [formState, action] = useActionState(actions.createSnippet, {
+```
