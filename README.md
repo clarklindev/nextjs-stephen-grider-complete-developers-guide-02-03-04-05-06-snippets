@@ -943,3 +943,53 @@ function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 
 <form onSubmit={handleSubmit}>
 
+## 49. adding the form validation
+- src/actions/index.tsx
+- return message if validation fails
+
+```tsx
+export async function createSnippet(formState:{message:string}, formData:FormData){
+    //check the users inputs and make sure they're valid
+    const title = formData.get('title');
+    const code = formData.get('code');
+
+    //validation
+    if(typeof title !=='string' || title.length < 3)
+    {
+        return {
+            message: 'Title must be longer'
+        }
+    }
+    if(typeof code !=='string' || code.length < 10)
+    {
+        return {
+            message: 'Code must be longer'
+        }
+    }
+   
+        
+
+
+    //check a new record in the database
+    const snippet = await db.snippet.create({
+      data:{
+        title,
+        code
+      }
+    });
+  
+    //redirect user back to the root route
+    redirect('/');
+
+  }
+  
+```
+
+- then in `app/snippets/new/page.tsx`
+
+```tsx
+//app/snippets/new/page.tsx
+//...
+
+{formState.message ? <div className="my-2 p-2 bg-red-200 border rounded border-red-400">{formState.message}</div> : null}
+```
