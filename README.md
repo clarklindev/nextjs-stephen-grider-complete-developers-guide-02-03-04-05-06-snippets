@@ -2,8 +2,9 @@
 
 ## test urls:
 
-[create snippet](http://localhost:3000/snippets/new)  
-[view snippets](http://localhost:3000)
+[create snippet](http://localhost:3000/snippets/new)   
+[view snippets](http://localhost:3000)  
+[edit snippet](http://localhost:3000/snippets/1/edit)  
 
 ---
 
@@ -481,4 +482,24 @@ return (
 	</pre>
 </div>
 );
+```
+
+## 34. linking to the edit page
+
+<img
+src='exercise_files/34-edit-snippet.png'
+alt='34-edit-snippet.png'
+width=600
+/>
+
+- `app/snippets/[id]/edit/page.tsx`
+- TODO: accessing the wildcard from the url
+- you receive this wildcard as a prop
+- TODO: hook up edit button to take you to edit page -> http://localhost:3000/snippets/1/edit
+
+```tsx
+import Link from 'next/link';
+//...
+
+<Link href={`/snippets/${snippet.id}/edit`} className="p-2 border rounded">Edit</Link>
 ```
