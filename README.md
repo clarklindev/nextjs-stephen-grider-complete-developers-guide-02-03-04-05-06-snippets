@@ -921,3 +921,25 @@ const [formState, action] = useActionState(actions.createSnippet, {message:''});
 //...
 
 ```
+
+## 48. Breaking Changes in Forms with React 19
+- import the startTransition hook
+`import { useActionState, startTransition } from "react";`
+
+- Create a handleSubmit function
+```tsx
+//app/snippets/new/page.tsx
+function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    startTransition(() => {
+      action(formData);
+    });
+  }
+
+```
+
+- Pass the new handleSubmit function to the onSubmit prop to opt out of the form reset
+
+<form onSubmit={handleSubmit}>
+
