@@ -603,6 +603,7 @@ return (
 - to handle changes add onChange() handler
 
 ```tsx
+//components/snippet-edit-form.tsx
 "use client";
 
 import type {Snippet} from '@prisma/client';
@@ -616,7 +617,7 @@ interface SnippetEditFormProps{
 export default function SnippetEditForm({snippet}:SnippetEditFormProps){
 	const [code, setCode] = useState(snippet.code);
 
-	const handleEditorChange = (value: string) => {
+	const handleEditorChange = (value: string='') => {
 		console.log(value);
 		setCode(value);
 	}
