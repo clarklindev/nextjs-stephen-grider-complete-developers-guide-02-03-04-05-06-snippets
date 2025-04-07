@@ -591,3 +591,36 @@ return (
 )
 
 ```
+
+## 37. installing monaco editor
+- Next.js 15 now makes use of React v19 by default
+- `npm install @monaco-editor/react --legacy-peer-deps`
+
+## 38. Adding the Monaco Editor
+- components/snippet-edit-form.tsx
+
+```tsx
+"use client";
+
+import type {Snippet} from '@prisma/client';
+import Editor from '@monaco-editor/react';
+
+interface SnippetEditFormProps{
+    snippet:Snippet
+}
+
+export default function SnippetEditForm({snippet}:SnippetEditFormProps){
+    return (<div>
+        <Editor 
+            height="40vh"
+            theme="vs-dark"
+            language="javascript"
+            defaultValue={snippet.code}
+			options={{
+				minimap: {enabled: false}
+			}}
+        />
+    </div>)
+}
+
+```
