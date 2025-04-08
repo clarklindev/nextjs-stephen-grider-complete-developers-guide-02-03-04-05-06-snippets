@@ -1132,3 +1132,9 @@ export const dynamic = 'force-dynamic';
   revalidatePath('/');
   redirect(`/`);
 ```
+
+## 56. caching with generateStaticParams
+- by adding generateStaticParams() for dynamic pages you tell nextjs to cache them
+- we write code to get snippets inside db
+- return an array of objects with an `id`.
+- at build time -> the array of objects will be used on the dynamic route to a collection of paths. eg.  `/snippets[id]` becomes `/snippets[1]`, `/snippets[2]`
