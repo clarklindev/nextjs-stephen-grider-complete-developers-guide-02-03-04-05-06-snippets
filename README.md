@@ -1122,3 +1122,13 @@ export const revalidate = 0;
 ```ts
 export const dynamic = 'force-dynamic';
 ```
+
+## 55. Help, My Page is Showing Old Data!
+- on demand - force purge a cache response
+- so the page is still static but we force page to use new data
+- src/actions/index (where you load up new page which has data)
+
+```ts
+  revalidatePath('/');
+  redirect(`/`);
+```

@@ -2,6 +2,7 @@
 
 import { db } from "@/db";
 import { redirect } from "next/navigation";
+import {revalidatePath} from 'next/cache';
 
 export async function editSnippet(id:number, code:string){
     await db.snippet.update({
@@ -19,6 +20,7 @@ export async function deleteSnippet(id:number){
         }
     })
 
+    revalidatePath('/');
     redirect(`/`);
 }
 
@@ -44,7 +46,7 @@ export async function createSnippet(formState:{message:string}, formData:FormDat
         }
 
         //check a new record in the database
-        const snippet = await db.snippet.create({
+        await db.snippet.create({
             data:{
                 title,
                 code
@@ -64,6 +66,7 @@ export async function createSnippet(formState:{message:string}, formData:FormDat
     }
     
     //redirect user back to the root route
+    revalidatePath('/');
     redirect('/');
 
   }
