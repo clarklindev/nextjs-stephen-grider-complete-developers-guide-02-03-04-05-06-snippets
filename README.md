@@ -1138,3 +1138,42 @@ export const dynamic = 'force-dynamic';
 - we write code to get snippets inside db
 - return an array of objects with an `id`.
 - at build time -> the array of objects will be used on the dynamic route to a collection of paths. eg.  `/snippets[id]` becomes `/snippets[1]`, `/snippets[2]`
+
+<img
+src='exercise_files/56-generateStaticParams.png'
+alt='56-generateStaticParams.png'
+width=600
+/>
+
+## 57. caching dynamic routes
+- `app/snippets/[id]/page`
+- inside generateStaticParams() you have to just fetch the snippets and return an object for each one with an id
+- and its tied to the dynamic [id] because of the route `app/snippets/[id]/page` so it knows its returning values for the dynamic route
+
+```ts
+//app/snippets/[id]/page
+export async function generateStaticParams(){
+    const snippets = await db.snippet.findMany();
+
+    return snippets.map((snippet)=>{
+        return {
+            id: snippet.id.toString()
+        }
+    });
+}
+```
+
+- then to take advantage of caching by using dynamic id: revalidatePath(`/snippets/${id}`);, in `actions/index.ts`
+
+```tsx
+export async function editSnippet(id:number, code:string){
+    await db.snippet.update({
+        where:{id},
+        data: {code}
+    });
+
+    revalidatePath(`/snippets/${id}`);
+    redirect(`/snippets/${id}`);
+}
+
+```
