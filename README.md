@@ -1045,3 +1045,80 @@ width=600
 - 3. homepage -> next determines its static -> at build time it renders the homepage (snapshot of when project was built)
 - 4. when someone visits homepage, the exact page is served 
 - TAKEAWAY -> when page is determined to be static, probably have to deal with caching mechanism (to deal with caching in production)
+
+## 53. what makes a static or dynamic route in nextjs
+- npm run build
+- static or dynamic route? look at build output (the symbols)
+
+<img
+src='exercise_files/53-static-or-dynamic-route.png'
+alt='53-static-or-dynamic-route.png'
+width=600
+/>
+
+- static route (pages by default are static) 
+
+<img
+src='exercise_files/53-ways-to-make-page-dynamic.png'
+alt='53-ways-to-make-page-dynamic.png'
+width=600
+/>
+
+- ways to make a route dynamic
+1. modify cookies (cookies.set(), cookies.delete()) / use anything tied to a query string 
+
+2. force route to be dynamic -> specific variables addded to page
+```ts
+export const dynamic="force-dynamic"
+//or
+export const revalidate=0
+```
+
+3. calling fetch and opting out of caching of the response
+```ts
+fetch('', {next: {revalidate:0 }})
+```
+
+4. using a dynamic path
+- /snippets/[id]/page.tsx
+- /snippets/[id]/edit/page.tsx
+ 
+
+## 54. controlling caching
+
+<img
+src='exercise_files/54-controlling-caching.png'
+alt='54-controlling-caching.png'
+width=600
+/>
+
+## timebased
+- revalidate page every 3 seconds (special variable) after request comes in
+- when to use -> eg. landing page of reddit content updates but doesnt need to be every second
+
+```ts
+export const revalidate = 3; 
+```
+
+## on-demand
+- revalidate on demand
+- call `revalidatePath()`
+- when to use -> when data changes and we expect to see up-to-date data
+
+```ts
+import {revalidatePath} from 'next/cache';
+
+revalidatePath('/snippets');
+```
+
+## disable caching
+- call one of the following
+- when to use -> next is using data from outside api / or when data changes with every request
+
+```ts
+export const revalidate = 0;
+```
+
+```ts
+export const dynamic = 'force-dynamic';
+```
